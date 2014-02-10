@@ -1,4 +1,7 @@
 Revision history for Dist-Zilla-Plugin-Test-CheckBreaks
 
+0.002     2014-02-10 02:14:48Z
+          - fix error in how conflicts module was being loaded in the test
+
 0.001     2014-02-10 01:21:15Z
           - Initial release.

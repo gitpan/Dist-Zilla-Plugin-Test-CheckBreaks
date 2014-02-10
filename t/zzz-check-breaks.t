@@ -6,7 +6,7 @@ use warnings;
 use Test::More;
 
 SKIP: {
-    eval { require 'Moose::Conflicts'; Moose::Conflicts->check_conflicts };
+    eval 'require Moose::Conflicts; 1' and Moose::Conflicts->check_conflicts;
     if ($INC{'Moose/Conflicts.pm'}) {
         diag $@ if $@;
         pass 'conflicts checked via Moose::Conflicts';

@@ -30,9 +30,10 @@ ok(-e $file, 'test created');
 my $content = $file->slurp;
 unlike($content, qr/[^\S\n]\n/m, 'no trailing whitespace in generated test');
 
-# it's important we require using quotes rather than a bareword, so prereq
-# scanners don't grab this module (::Conflicts modules are not usually indexed)
-like($content, qr/require '$_';/m, "test checks $_")
+# it's important we require using an eval'd string rather than via a bareword,
+# so prereq scanners don't grab this module (::Conflicts modules are not
+# usually indexed)
+like($content, qr/eval 'require $_; 1'/m, "test checks $_")
     for 'Moose::Conflicts';
 
 subtest 'run the generated test' => sub
