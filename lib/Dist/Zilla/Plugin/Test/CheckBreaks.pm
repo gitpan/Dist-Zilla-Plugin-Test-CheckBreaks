@@ -1,0 +1,261 @@
+use strict;
+use warnings;
+package Dist::Zilla::Plugin::Test::CheckBreaks;
+BEGIN {
+  $Dist::Zilla::Plugin::Test::CheckBreaks::AUTHORITY = 'cpan:ETHER';
+}
+# git description: aee222a
+$Dist::Zilla::Plugin::Test::CheckBreaks::VERSION = '0.001';
+# ABSTRACT: Generate a test that shows your conflicting modules
+# vim: set ts=8 sw=4 tw=78 et :
+
+use Moose;
+with (
+    'Dist::Zilla::Role::FileGatherer',
+    'Dist::Zilla::Role::FileMunger',
+    'Dist::Zilla::Role::TextTemplate',
+    'Dist::Zilla::Role::PrereqSource',
+);
+use Module::Metadata;
+use Path::Tiny;
+use Module::Runtime 'module_notional_filename';
+use List::MoreUtils 'any';
+use namespace::autoclean;
+
+sub filename { path('t', 'zzz-check-breaks.t') }
+
+sub gather_files
+{
+    my $self = shift;
+
+    require Dist::Zilla::File::InMemory;
+
+    $self->add_file( Dist::Zilla::File::InMemory->new(
+        name => $self->filename->stringify,
+        content => <<'TEST',
+use strict;
+use warnings;
+
+# this test was generated with {{ ref($plugin) . ' ' . ($plugin->VERSION || '<self>') }}
+
+use Test::More;
+
+SKIP: {
+{{
+    if ($module) {
+        require Module::Runtime;
+        my $filename = Module::Runtime::module_notional_filename($module);
+        <<"CHECK_CONFLICTS";
+    eval { require '${module}'; ${module}->check_conflicts };
+    if (\$INC{'$filename'}) {
+        diag \$@ if \$@;
+        pass 'conflicts checked via $module';
+    }
+    else {
+        skip 'no $module module found', 1;
+    }
+CHECK_CONFLICTS
+    }
+    else
+    {
+        "    skip 'no conflicts module found to check against', 1;\n";
+    }
+}}}
+
+{{
+    if (keys %$breaks)
+    {
+        use Data::Dumper;
+        my $dumper = Data::Dumper->new([ $breaks ], [ 'breaks' ]);
+        $dumper->Sortkeys(1);
+        $dumper->Indent(1);
+        $dumper->Useqq(1);
+        'my $dist_name = \'' . $dist->name . "';\n" .
+        'my ' . $dumper->Dump . <<'CHECK_BREAKS';
+
+use CPAN::Meta::Requirements;
+my $reqs = CPAN::Meta::Requirements->new;
+$reqs->add_string_requirement($_, $breaks->{$_}) foreach keys %$breaks;
+
+use CPAN::Meta::Check 0.007 'check_requirements';
+our $result = check_requirements($reqs, 'conflicts');
+
+if (my @breaks = sort grep { defined $result->{$_} } keys %$result)
+{
+    diag "Breakages found with $dist_name:";
+    diag "$result->{$_}" for @breaks;
+    diag "\n", 'You should now update these modules!';
+}
+CHECK_BREAKS
+    }
+    else { q{pass 'no x_breaks data to check';} }
+}}
+
+done_testing;
+TEST
+    ));
+}
+
+has conflicts_module => (
+    is => 'ro', isa => 'Str|Undef',
+    lazy => 1,
+    default => sub {
+        my $self = shift;
+
+        $self->log_debug('no conflicts_module provided; looking for one in the dist...');
+        # TODO: use Dist::Zilla::Role::ModuleMetadata
+        my $main_file = $self->zilla->main_module;
+        open my $fh, sprintf('<encoding(%s)', $main_file->encoding), \$main_file->encoded_content
+            or $self->log_fatal('cannot open handle to ' . $main_file->name . ' content: ' . $!);
+
+        my $mmd = Module::Metadata->new_from_handle($fh, $main_file->name);
+        my $module = ($mmd->packages_inside)[0] . '::Conflicts';
+
+        # check that the file exists in the dist (it should never be shipped
+        # separately!)
+        my $conflicts_filename = module_notional_filename($module);
+        if (any { $_->name eq path('lib', $conflicts_filename) } @{ $self->zilla->files })
+        {
+            $self->log_debug($module . ' found');
+            return $module;
+        }
+
+        $self->log_debug('No ' . $module . ' found');
+        return undef;
+    },
+);
+
+sub munge_file
+{
+    my ($self, $file) = @_;
+
+    return unless $file->name eq $self->filename;
+
+    my $breaks_data = $self->zilla->distmeta->{x_breaks};
+
+    $self->log('no conflicts module found to check against: adding no-op test')
+        if not keys %$breaks_data and not $self->conflicts_module;
+
+    # munge breaks data for back-compat: interpret bare versions as '<= version'
+    foreach my $package (keys %$breaks_data)
+    {
+        my $version = $breaks_data->{$package};
+        $breaks_data->{$package} = '<= ' . $version if eval { version->parse($version); 1 };
+    }
+
+    $file->content(
+        $self->fill_in_string(
+            $file->content,
+            {
+                dist => \($self->zilla),
+                plugin => \$self,
+                module  => \($self->conflicts_module),
+                breaks => \$breaks_data,
+            }
+        )
+    );
+
+    return;
+}
+
+sub register_prereqs
+{
+    my $self = shift;
+
+    return unless keys %{ $self->zilla->distmeta->{x_breaks} };
+
+    $self->zilla->register_prereqs(
+        {
+            phase => 'test',
+            type  => 'requires',
+        },
+        'CPAN::Meta::Requirements' => 0,
+        'CPAN::Meta::Check' => '0.007',
+    );
+}
+
+__PACKAGE__->meta->make_immutable;
+
+__END__
+
+=pod
+
+=encoding UTF-8
+
+=for :stopwords Karen Etheridge
+
+=head1 NAME
+
+Dist::Zilla::Plugin::Test::CheckBreaks - Generate a test that shows your conflicting modules
+
+=head1 VERSION
+
+version 0.001
+
+=head1 SYNOPSIS
+
+In your F<dist.ini>:
+
+    [CheckBreaks]
+    conflicts_module = Moose::Conflicts
+
+=head1 DESCRIPTION
+
+This is a L<Dist::Zilla> plugin that runs at the
+L<gather files|Dist::Zilla::Role::FileGatherer> stage, providing a test file
+that runs last in your test suite and checks for conflicting modules, as
+calculated by L<Dist::CheckConflicts>.  (See the F<t/zzz-check-breaks.t> test
+in this distribution for an example.)
+
+In addition, the content of the C<x_breaks> meta field is checked in the test.
+It expects L<version ranges|CPAN::Meta::Spec#Version-Ranges>, with one
+addition, for backwards compatibility with
+L<[Conflicts]|Dist::Zilla::Plugin::Conflicts>: if a bare version number is
+specified, it is interpreted as C<< '<= $version' >> (to preserve the intent
+that versions at or below the version specified are those considered to be
+broken).  It is possible that this interpretation will be removed in the
+future; almost certainly before C<breaks> becomes a formal part of the meta
+specification.
+
+=head1 CONFIGURATION
+
+=head2 C<conflicts_module>
+
+The name of the conflicts module to load and invoke the C<check_conflicts>
+method on. Defaults to the name of the main module with C<::Conflicts>
+appended, such as what is generated by the
+L<[Conflicts]|Dist::Zilla::Plugin::Conflicts> plugin.
+
+Nothing happens if the module does not exist.
+
+If your distribution uses L<Moose> but does not itself generate a conflicts
+plugin, then C<Moose::Conflicts> is an excellent choice, as there are numerous
+interoperability conflicts catalogued in that module.
+
+=for Pod::Coverage filename gather_files munge_file register_prereqs
+
+=head1 SEE ALSO
+
+=over 4
+
+=item * L<Dist::Zilla::Plugin::Breaks>
+
+=item * L<Dist::CheckConflicts>
+
+=item * L<The Annotated Lancaster Consensus|http://www.dagolden.com/index.php/2098/the-annotated-lancaster-consensus/>
+at "Improving on 'conflicts'"
+
+=back
+
+=head1 AUTHOR
+
+Karen Etheridge <ether@cpan.org>
+
+=head1 COPYRIGHT AND LICENSE
+
+This software is copyright (c) 2014 by Karen Etheridge.
+
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
+
+=cut
