@@ -81,6 +81,7 @@ my $static_prereqs = do { my $x = {
                     },
        'runtime' => {
                       'requires' => {
+                                      'Data::Section' => '0.004',
                                       'Dist::Zilla::File::InMemory' => '0',
                                       'Dist::Zilla::Role::FileGatherer' => '0',
                                       'Dist::Zilla::Role::FileMunger' => '0',
@@ -91,6 +92,7 @@ my $static_prereqs = do { my $x = {
                                       'Module::Runtime' => '0',
                                       'Moose' => '0',
                                       'Path::Tiny' => '0',
+                                      'Sub::Exporter::ForMethods' => '0',
                                       'namespace::autoclean' => '0',
                                       'perl' => '5.008',
                                       'strict' => '0',
@@ -105,6 +107,7 @@ my $static_prereqs = do { my $x = {
                    'requires' => {
                                    'CPAN::Meta::Check' => '0.007',
                                    'CPAN::Meta::Requirements' => '0',
+                                   'Dist::Zilla::Role::MetaProvider' => '0',
                                    'ExtUtils::MakeMaker' => '0',
                                    'File::Spec::Functions' => '0',
                                    'File::pushd' => '0',
@@ -113,6 +116,7 @@ my $static_prereqs = do { my $x = {
                                    'Test::Deep' => '0',
                                    'Test::More' => '0',
                                    'if' => '0',
+                                   'lib' => '0',
                                    'version' => '0'
                                  }
                  }

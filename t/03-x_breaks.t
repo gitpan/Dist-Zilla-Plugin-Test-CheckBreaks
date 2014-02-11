@@ -8,6 +8,8 @@ use Path::Tiny;
 use File::pushd;
 use Test::Deep;
 
+use lib 't/lib';
+
 my $tzil = Builder->from_config(
     { dist_root => 't/does-not-exist' },
     {
@@ -15,7 +17,7 @@ my $tzil = Builder->from_config(
             'source/dist.ini' => simple_ini(
                 [ GatherDir => ],
                 [ 'Test::CheckBreaks' => ],
-                [ 'Breaks' => {
+                [ '=Breaks' => {
                     'Dist::Zilla' => Dist::Zilla->VERSION,  # fails
                     'ExtUtils::MakeMaker' => '20.0',        # fails
                     'version' => '== ' . version->VERSION,   # fails

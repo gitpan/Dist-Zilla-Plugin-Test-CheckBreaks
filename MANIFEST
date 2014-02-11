@@ -16,6 +16,7 @@ t/00-report-prereqs.t
 t/01-basic.t
 t/02-default.t
 t/03-x_breaks.t
+t/lib/Breaks.pm
 t/zzz-check-breaks.t
 weaver.ini
 xt/author/00-compile.t

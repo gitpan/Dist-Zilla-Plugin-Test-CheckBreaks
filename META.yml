@@ -5,6 +5,7 @@ author:
 build_requires:
   CPAN::Meta::Check: '0.007'
   CPAN::Meta::Requirements: '0'
+  Dist::Zilla::Role::MetaProvider: '0'
   ExtUtils::MakeMaker: '0'
   File::Spec::Functions: '0'
   File::pushd: '0'
@@ -13,6 +14,7 @@ build_requires:
   Test::Deep: '0'
   Test::More: '0'
   if: '0'
+  lib: '0'
   version: '0'
 configure_requires:
   ExtUtils::MakeMaker: '6.30'
@@ -33,8 +35,9 @@ no_index:
 provides:
   Dist::Zilla::Plugin::Test::CheckBreaks:
     file: lib/Dist/Zilla/Plugin/Test/CheckBreaks.pm
-    version: '0.002'
+    version: '0.003'
 requires:
+  Data::Section: '0.004'
   Dist::Zilla::File::InMemory: '0'
   Dist::Zilla::Role::FileGatherer: '0'
   Dist::Zilla::Role::FileMunger: '0'
@@ -45,6 +48,7 @@ requires:
   Module::Runtime: '0'
   Moose: '0'
   Path::Tiny: '0'
+  Sub::Exporter::ForMethods: '0'
   namespace::autoclean: '0'
   perl: '5.008'
   strict: '0'
@@ -53,7 +57,7 @@ resources:
   bugtracker: https://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-Plugin-Test-CheckBreaks
   homepage: https://github.com/karenetheridge/Dist-Zilla-Plugin-Test-CheckBreaks
   repository: https://github.com/karenetheridge/Dist-Zilla-Plugin-Test-CheckBreaks.git
-version: '0.002'
+version: '0.003'
 x_Dist_Zilla:
   perl:
     version: '5.019008'

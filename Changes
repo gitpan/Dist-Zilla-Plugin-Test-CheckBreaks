@@ -1,5 +1,9 @@
 Revision history for Dist-Zilla-Plugin-Test-CheckBreaks
 
+0.003     2014-02-11 06:13:34Z
+          - remove invalid assumption that [Breaks] is installed by inlining a
+            stripped down version into the necessary test
+
 0.002     2014-02-10 02:14:48Z
           - fix error in how conflicts module was being loaded in the test
 
