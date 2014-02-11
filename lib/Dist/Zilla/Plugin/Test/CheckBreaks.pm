@@ -4,8 +4,8 @@ package Dist::Zilla::Plugin::Test::CheckBreaks;
 BEGIN {
   $Dist::Zilla::Plugin::Test::CheckBreaks::AUTHORITY = 'cpan:ETHER';
 }
-# git description: v0.002-6-g74baa98
-$Dist::Zilla::Plugin::Test::CheckBreaks::VERSION = '0.003';
+# git description: v0.003-1-gc0da19b
+$Dist::Zilla::Plugin::Test::CheckBreaks::VERSION = '0.004';
 # ABSTRACT: Generate a test that shows your conflicting modules
 # vim: set ts=8 sw=4 tw=78 et :
 
@@ -214,7 +214,7 @@ Dist::Zilla::Plugin::Test::CheckBreaks - Generate a test that shows your conflic
 
 =head1 VERSION
 
-version 0.003
+version 0.004
 
 =head1 SYNOPSIS
 
@@ -322,7 +322,7 @@ SKIP: {
         require Module::Runtime;
         my $filename = Module::Runtime::module_notional_filename($module);
         <<"CHECK_CONFLICTS";
-    eval 'require $module; 1' and ${module}->check_conflicts;
+    eval 'require $module; ${module}->check_conflicts';
     if (\$INC{'$filename'}) {
         diag \$@ if \$@;
         pass 'conflicts checked via $module';

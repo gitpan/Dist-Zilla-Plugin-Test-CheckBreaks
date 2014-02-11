@@ -1,5 +1,9 @@
 Revision history for Dist-Zilla-Plugin-Test-CheckBreaks
 
+0.004     2014-02-11 06:28:29Z
+          - keep usage of ::Conflicts module inside an eval to protect against
+            blowing up when a conflicting module fails to compile
+
 0.003     2014-02-11 06:13:34Z
           - remove invalid assumption that [Breaks] is installed by inlining a
             stripped down version into the necessary test

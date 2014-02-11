@@ -33,7 +33,7 @@ CONFLICTS
     my $content = $file->slurp;
     unlike($content, qr/[^\S\n]\n/m, 'no trailing whitespace in generated test');
 
-    like($content, qr/eval 'require $_; 1'/m, "test checks $_")
+    like($content, qr/eval 'require $_; $_->check_conflicts'/m, "test checks $_")
         for 'Foo::Bar::Conflicts';
 
     subtest 'run the generated test' => sub

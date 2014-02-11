@@ -103,7 +103,7 @@
    "provides" : {
       "Dist::Zilla::Plugin::Test::CheckBreaks" : {
          "file" : "lib/Dist/Zilla/Plugin/Test/CheckBreaks.pm",
-         "version" : "0.003"
+         "version" : "0.004"
       }
    },
    "release_status" : "stable",
@@ -119,7 +119,7 @@
          "web" : "https://github.com/karenetheridge/Dist-Zilla-Plugin-Test-CheckBreaks"
       }
    },
-   "version" : "0.003",
+   "version" : "0.004",
    "x_Dist_Zilla" : {
       "perl" : {
          "version" : "5.019008"

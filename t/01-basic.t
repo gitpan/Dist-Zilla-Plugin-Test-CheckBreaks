@@ -33,7 +33,7 @@ unlike($content, qr/[^\S\n]\n/m, 'no trailing whitespace in generated test');
 # it's important we require using an eval'd string rather than via a bareword,
 # so prereq scanners don't grab this module (::Conflicts modules are not
 # usually indexed)
-like($content, qr/eval 'require $_; 1'/m, "test checks $_")
+like($content, qr/eval 'require $_; $_->check_conflicts'/m, "test checks $_")
     for 'Moose::Conflicts';
 
 subtest 'run the generated test' => sub

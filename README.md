@@ -4,7 +4,7 @@ Dist::Zilla::Plugin::Test::CheckBreaks - Generate a test that shows your conflic
 
 # VERSION
 
-version 0.003
+version 0.004
 
 # SYNOPSIS
 
