@@ -1,5 +1,9 @@
 Revision history for Dist-Zilla-Plugin-Test-CheckBreaks
 
+0.005     2014-02-12 05:12:42Z
+          - fix failing test with old Test::More
+          - fix invalid munging of bare version numbers in metadata
+
 0.004     2014-02-11 06:28:29Z
           - keep usage of ::Conflicts module inside an eval to protect against
             blowing up when a conflicting module fails to compile

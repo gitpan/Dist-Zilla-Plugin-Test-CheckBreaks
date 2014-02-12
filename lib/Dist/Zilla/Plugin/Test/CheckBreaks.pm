@@ -4,8 +4,8 @@ package Dist::Zilla::Plugin::Test::CheckBreaks;
 BEGIN {
   $Dist::Zilla::Plugin::Test::CheckBreaks::AUTHORITY = 'cpan:ETHER';
 }
-# git description: v0.003-1-gc0da19b
-$Dist::Zilla::Plugin::Test::CheckBreaks::VERSION = '0.004';
+# git description: v0.004-5-gf09248f
+$Dist::Zilla::Plugin::Test::CheckBreaks::VERSION = '0.005';
 # ABSTRACT: Generate a test that shows your conflicting modules
 # vim: set ts=8 sw=4 tw=78 et :
 
@@ -47,8 +47,10 @@ has conflicts_module => (
         $self->log_debug('no conflicts_module provided; looking for one in the dist...');
         # TODO: use Dist::Zilla::Role::ModuleMetadata
         my $main_file = $self->zilla->main_module;
-        open my $fh, sprintf('<encoding(%s)', $main_file->encoding), \$main_file->encoded_content
-            or $self->log_fatal('cannot open handle to ' . $main_file->name . ' content: ' . $!);
+        open my $fh,
+            sprintf('<encoding(%s)', ($main_file->can('encoding') ? $main_file->encoding : 'Latin1')),
+            \$main_file->encoded_content
+                or $self->log_fatal('cannot open handle to ' . $main_file->name . ' content: ' . $!);
 
         my $mmd = Module::Metadata->new_from_handle($fh, $main_file->name);
         my $module = ($mmd->packages_inside)[0] . '::Conflicts';
@@ -77,13 +79,6 @@ sub munge_file
 
     $self->log('no conflicts module found to check against: adding no-op test')
         if not keys %$breaks_data and not $self->conflicts_module;
-
-    # munge breaks data for back-compat: interpret bare versions as '<= version'
-    foreach my $package (keys %$breaks_data)
-    {
-        my $version = $breaks_data->{$package};
-        $breaks_data->{$package} = '<= ' . $version if version::is_lax($version);
-    }
 
     $file->content(
         $self->fill_in_string(
@@ -214,7 +209,7 @@ Dist::Zilla::Plugin::Test::CheckBreaks - Generate a test that shows your conflic
 
 =head1 VERSION
 
-version 0.004
+version 0.005
 
 =head1 SYNOPSIS
 
@@ -323,13 +318,10 @@ SKIP: {
         my $filename = Module::Runtime::module_notional_filename($module);
         <<"CHECK_CONFLICTS";
     eval 'require $module; ${module}->check_conflicts';
-    if (\$INC{'$filename'}) {
-        diag \$@ if \$@;
-        pass 'conflicts checked via $module';
-    }
-    else {
-        skip 'no $module module found', 1;
-    }
+    skip('no $module module found', 1) if not \$INC{'$filename'};
+
+    diag \$@ if \$@;
+    pass 'conflicts checked via $module';
 CHECK_CONFLICTS
     }
     else
@@ -346,8 +338,8 @@ CHECK_CONFLICTS
         $dumper->Sortkeys(1);
         $dumper->Indent(1);
         $dumper->Useqq(1);
-        'my $dist_name = \'' . $dist->name . "';\n" .
-        'my ' . $dumper->Dump . <<'CHECK_BREAKS';
+        my $dist_name = $dist->name;
+        'my ' . $dumper->Dump . <<'CHECK_BREAKS_1' .
 
 use CPAN::Meta::Requirements;
 my $reqs = CPAN::Meta::Requirements->new;
@@ -358,11 +350,13 @@ our $result = check_requirements($reqs, 'conflicts');
 
 if (my @breaks = sort grep { defined $result->{$_} } keys %$result)
 {
-    diag "Breakages found with $dist_name:";
+CHECK_BREAKS_1
+    "    diag 'Breakages found with $dist_name:';\n" .
+    <<'CHECK_BREAKS_2';
     diag "$result->{$_}" for @breaks;
     diag "\n", 'You should now update these modules!';
 }
-CHECK_BREAKS
+CHECK_BREAKS_2
     }
     else { q{pass 'no x_breaks data to check';} }
 }}

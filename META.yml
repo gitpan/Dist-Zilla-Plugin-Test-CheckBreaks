@@ -35,7 +35,7 @@ no_index:
 provides:
   Dist::Zilla::Plugin::Test::CheckBreaks:
     file: lib/Dist/Zilla/Plugin/Test/CheckBreaks.pm
-    version: '0.004'
+    version: '0.005'
 requires:
   Data::Section: '0.004'
   Dist::Zilla::File::InMemory: '0'
@@ -57,7 +57,7 @@ resources:
   bugtracker: https://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-Plugin-Test-CheckBreaks
   homepage: https://github.com/karenetheridge/Dist-Zilla-Plugin-Test-CheckBreaks
   repository: https://github.com/karenetheridge/Dist-Zilla-Plugin-Test-CheckBreaks.git
-version: '0.004'
+version: '0.005'
 x_Dist_Zilla:
   perl:
     version: '5.019008'
@@ -79,7 +79,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::Breaks
       name: Breaks
-      version: '0.001'
+      version: '0.002'
     -
       class: Dist::Zilla::Plugin::Git::NextVersion
       name: '@Author::ETHER/Git::NextVersion'
