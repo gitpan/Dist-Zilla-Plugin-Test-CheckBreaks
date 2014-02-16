@@ -4,8 +4,8 @@ package Dist::Zilla::Plugin::Test::CheckBreaks;
 BEGIN {
   $Dist::Zilla::Plugin::Test::CheckBreaks::AUTHORITY = 'cpan:ETHER';
 }
-# git description: v0.004-5-gf09248f
-$Dist::Zilla::Plugin::Test::CheckBreaks::VERSION = '0.005';
+# git description: v0.005-1-g2721e26
+$Dist::Zilla::Plugin::Test::CheckBreaks::VERSION = '0.006';
 # ABSTRACT: Generate a test that shows your conflicting modules
 # vim: set ts=8 sw=4 tw=78 et :
 
@@ -47,9 +47,10 @@ has conflicts_module => (
         $self->log_debug('no conflicts_module provided; looking for one in the dist...');
         # TODO: use Dist::Zilla::Role::ModuleMetadata
         my $main_file = $self->zilla->main_module;
-        open my $fh,
-            sprintf('<encoding(%s)', ($main_file->can('encoding') ? $main_file->encoding : 'Latin1')),
-            \$main_file->encoded_content
+        my $fh;
+        ($main_file->can('encoding')
+            ? open $fh, sprintf('<encoding(%s)', $main_file->encoding), \$main_file->encoded_content
+            : open $fh, '<', \$main_file->content)
                 or $self->log_fatal('cannot open handle to ' . $main_file->name . ' content: ' . $!);
 
         my $mmd = Module::Metadata->new_from_handle($fh, $main_file->name);
@@ -209,7 +210,7 @@ Dist::Zilla::Plugin::Test::CheckBreaks - Generate a test that shows your conflic
 
 =head1 VERSION
 
-version 0.005
+version 0.006
 
 =head1 SYNOPSIS
 

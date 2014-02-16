@@ -1,5 +1,9 @@
 Revision history for Dist-Zilla-Plugin-Test-CheckBreaks
 
+0.006     2014-02-16 03:02:30Z
+          - compatibility fix for older Dist::Zilla (that lacks knowledge of
+            file encodings)
+
 0.005     2014-02-12 05:12:42Z
           - fix failing test with old Test::More
           - fix invalid munging of bare version numbers in metadata

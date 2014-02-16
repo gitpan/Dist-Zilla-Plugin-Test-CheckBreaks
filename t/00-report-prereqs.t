@@ -51,7 +51,7 @@ my $static_prereqs = do { my $x = {
                       },
        'develop' => {
                       'recommends' => {
-                                        'Dist::Zilla::PluginBundle::Author::ETHER' => '0.049'
+                                        'Dist::Zilla::PluginBundle::Author::ETHER' => '0.050'
                                       },
                       'requires' => {
                                       'Dist::Zilla' => '5.013',
@@ -94,7 +94,7 @@ my $static_prereqs = do { my $x = {
                                       'Path::Tiny' => '0',
                                       'Sub::Exporter::ForMethods' => '0',
                                       'namespace::autoclean' => '0',
-                                      'perl' => '5.008',
+                                      'perl' => '5.006',
                                       'strict' => '0',
                                       'warnings' => '0'
                                     }
