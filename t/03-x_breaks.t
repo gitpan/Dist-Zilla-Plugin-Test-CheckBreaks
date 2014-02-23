@@ -33,7 +33,7 @@ my $tzil = Builder->from_config(
 $tzil->chrome->logger->set_debug(1);
 $tzil->build;
 
-my $build_dir = $tzil->tempdir->subdir('build');
+my $build_dir = path($tzil->tempdir)->child('build');
 my $file = path($build_dir, 't', 'zzz-check-breaks.t');
 ok(-e $file, 'test created');
 

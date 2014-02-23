@@ -4,8 +4,8 @@ package Dist::Zilla::Plugin::Test::CheckBreaks;
 BEGIN {
   $Dist::Zilla::Plugin::Test::CheckBreaks::AUTHORITY = 'cpan:ETHER';
 }
-# git description: v0.005-1-g2721e26
-$Dist::Zilla::Plugin::Test::CheckBreaks::VERSION = '0.006';
+# git description: v0.006-2-g13b924c
+$Dist::Zilla::Plugin::Test::CheckBreaks::VERSION = '0.007';
 # ABSTRACT: Generate a test that shows your conflicting modules
 # vim: set ts=8 sw=4 tw=78 et :
 
@@ -100,7 +100,8 @@ sub register_prereqs
 {
     my $self = shift;
 
-    return unless keys %{ $self->zilla->distmeta->{x_breaks} };
+    my $distmeta = $self->zilla->distmeta;
+    return unless exists $distmeta->{x_breaks} and keys %{ $distmeta->{x_breaks} };
 
     $self->zilla->register_prereqs(
         {
@@ -210,7 +211,7 @@ Dist::Zilla::Plugin::Test::CheckBreaks - Generate a test that shows your conflic
 
 =head1 VERSION
 
-version 0.006
+version 0.007
 
 =head1 SYNOPSIS
 

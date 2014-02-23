@@ -25,7 +25,7 @@
       "configure" : {
          "requires" : {
             "ExtUtils::MakeMaker" : "6.30",
-            "Module::Build::Tiny" : "0.034"
+            "Module::Build::Tiny" : "0.035"
          }
       },
       "develop" : {
@@ -93,6 +93,7 @@
             "List::Util" : "0",
             "Test::DZil" : "0",
             "Test::Deep" : "0",
+            "Test::Deep::YAML" : "0.002",
             "Test::More" : "0",
             "if" : "0",
             "lib" : "0",
@@ -103,7 +104,7 @@
    "provides" : {
       "Dist::Zilla::Plugin::Test::CheckBreaks" : {
          "file" : "lib/Dist/Zilla/Plugin/Test/CheckBreaks.pm",
-         "version" : "0.006"
+         "version" : "0.007"
       }
    },
    "release_status" : "stable",
@@ -119,7 +120,7 @@
          "web" : "https://github.com/karenetheridge/Dist-Zilla-Plugin-Test-CheckBreaks"
       }
    },
-   "version" : "0.006",
+   "version" : "0.007",
    "x_Dist_Zilla" : {
       "perl" : {
          "version" : "5.019008"
@@ -151,7 +152,7 @@
          {
             "class" : "Dist::Zilla::Plugin::Git::NextVersion",
             "name" : "@Author::ETHER/Git::NextVersion",
-            "version" : "2.020"
+            "version" : "2.019"
          },
          {
             "class" : "Dist::Zilla::Plugin::PromptIfStale",
@@ -201,7 +202,7 @@
          {
             "class" : "Dist::Zilla::Plugin::Git::GatherDir",
             "name" : "@Author::ETHER/Git::GatherDir",
-            "version" : "2.020"
+            "version" : "2.019"
          },
          {
             "class" : "Dist::Zilla::Plugin::MetaYAML",
@@ -563,7 +564,7 @@
          {
             "class" : "Dist::Zilla::Plugin::RunExtraTests",
             "name" : "@Author::ETHER/RunExtraTests",
-            "version" : "0.017"
+            "version" : "0.018"
          },
          {
             "class" : "Dist::Zilla::Plugin::MakeMaker::Fallback",
@@ -600,7 +601,7 @@
          {
             "class" : "Dist::Zilla::Plugin::Git::Check",
             "name" : "@Author::ETHER/initial check",
-            "version" : "2.020"
+            "version" : "2.019"
          },
          {
             "class" : "Dist::Zilla::Plugin::Git::CheckFor::MergeConflicts",
@@ -630,7 +631,7 @@
          {
             "class" : "Dist::Zilla::Plugin::Git::Check",
             "name" : "@Author::ETHER/after tests",
-            "version" : "2.020"
+            "version" : "2.019"
          },
          {
             "class" : "Dist::Zilla::Plugin::UploadToCPAN",
@@ -645,12 +646,12 @@
          {
             "class" : "Dist::Zilla::Plugin::Git::Commit",
             "name" : "@Author::ETHER/Git::Commit",
-            "version" : "2.020"
+            "version" : "2.019"
          },
          {
             "class" : "Dist::Zilla::Plugin::Git::Tag",
             "name" : "@Author::ETHER/Git::Tag",
-            "version" : "2.020"
+            "version" : "2.019"
          },
          {
             "class" : "Dist::Zilla::Plugin::GitHub::Update",
@@ -660,7 +661,7 @@
          {
             "class" : "Dist::Zilla::Plugin::Git::Push",
             "name" : "@Author::ETHER/Git::Push",
-            "version" : "2.020"
+            "version" : "2.019"
          },
          {
             "class" : "Dist::Zilla::Plugin::InstallRelease",

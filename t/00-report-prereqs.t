@@ -46,7 +46,7 @@ my $static_prereqs = do { my $x = {
        'configure' => {
                         'requires' => {
                                         'ExtUtils::MakeMaker' => '6.30',
-                                        'Module::Build::Tiny' => '0.034'
+                                        'Module::Build::Tiny' => '0.035'
                                       }
                       },
        'develop' => {
@@ -114,6 +114,7 @@ my $static_prereqs = do { my $x = {
                                    'List::Util' => '0',
                                    'Test::DZil' => '0',
                                    'Test::Deep' => '0',
+                                   'Test::Deep::YAML' => '0.002',
                                    'Test::More' => '0',
                                    'if' => '0',
                                    'lib' => '0',

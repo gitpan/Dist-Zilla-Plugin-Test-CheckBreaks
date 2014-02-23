@@ -12,13 +12,14 @@ build_requires:
   List::Util: '0'
   Test::DZil: '0'
   Test::Deep: '0'
+  Test::Deep::YAML: '0.002'
   Test::More: '0'
   if: '0'
   lib: '0'
   version: '0'
 configure_requires:
   ExtUtils::MakeMaker: '6.30'
-  Module::Build::Tiny: '0.034'
+  Module::Build::Tiny: '0.035'
 dynamic_config: 0
 generated_by: 'Dist::Zilla version 5.013, CPAN::Meta::Converter version 2.133380'
 license: perl
@@ -35,7 +36,7 @@ no_index:
 provides:
   Dist::Zilla::Plugin::Test::CheckBreaks:
     file: lib/Dist/Zilla/Plugin/Test/CheckBreaks.pm
-    version: '0.006'
+    version: '0.007'
 requires:
   Data::Section: '0.004'
   Dist::Zilla::File::InMemory: '0'
@@ -57,7 +58,7 @@ resources:
   bugtracker: https://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-Plugin-Test-CheckBreaks
   homepage: https://github.com/karenetheridge/Dist-Zilla-Plugin-Test-CheckBreaks
   repository: https://github.com/karenetheridge/Dist-Zilla-Plugin-Test-CheckBreaks.git
-version: '0.006'
+version: '0.007'
 x_Dist_Zilla:
   perl:
     version: '5.019008'
@@ -83,7 +84,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::Git::NextVersion
       name: '@Author::ETHER/Git::NextVersion'
-      version: '2.020'
+      version: '2.019'
     -
       class: Dist::Zilla::Plugin::PromptIfStale
       config:
@@ -122,7 +123,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::Git::GatherDir
       name: '@Author::ETHER/Git::GatherDir'
-      version: '2.020'
+      version: '2.019'
     -
       class: Dist::Zilla::Plugin::MetaYAML
       name: '@Author::ETHER/MetaYAML'
@@ -402,7 +403,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::RunExtraTests
       name: '@Author::ETHER/RunExtraTests'
-      version: '0.017'
+      version: '0.018'
     -
       class: Dist::Zilla::Plugin::MakeMaker::Fallback
       name: '@Author::ETHER/MakeMaker::Fallback'
@@ -430,7 +431,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::Git::Check
       name: '@Author::ETHER/initial check'
-      version: '2.020'
+      version: '2.019'
     -
       class: Dist::Zilla::Plugin::Git::CheckFor::MergeConflicts
       name: '@Author::ETHER/Git::CheckFor::MergeConflicts'
@@ -454,7 +455,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::Git::Check
       name: '@Author::ETHER/after tests'
-      version: '2.020'
+      version: '2.019'
     -
       class: Dist::Zilla::Plugin::UploadToCPAN
       name: '@Author::ETHER/UploadToCPAN'
@@ -466,11 +467,11 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::Git::Commit
       name: '@Author::ETHER/Git::Commit'
-      version: '2.020'
+      version: '2.019'
     -
       class: Dist::Zilla::Plugin::Git::Tag
       name: '@Author::ETHER/Git::Tag'
-      version: '2.020'
+      version: '2.019'
     -
       class: Dist::Zilla::Plugin::GitHub::Update
       name: '@Author::ETHER/GitHub::Update'
@@ -478,7 +479,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::Git::Push
       name: '@Author::ETHER/Git::Push'
-      version: '2.020'
+      version: '2.019'
     -
       class: Dist::Zilla::Plugin::InstallRelease
       name: '@Author::ETHER/InstallRelease'

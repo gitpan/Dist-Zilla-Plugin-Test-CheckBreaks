@@ -1,5 +1,8 @@
 Revision history for Dist-Zilla-Plugin-Test-CheckBreaks
 
+0.007     2014-02-23 00:39:22Z
+          - avoid adding an empty x_breaks field to metadata
+
 0.006     2014-02-16 03:02:30Z
           - compatibility fix for older Dist::Zilla (that lacks knowledge of
             file encodings)
