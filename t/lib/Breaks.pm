@@ -4,6 +4,8 @@ package # hide from PAUSE! but see Dist::Zilla::Plugin::Breaks...
     Breaks;
 use Moose;
 with 'Dist::Zilla::Role::MetaProvider';
+use CPAN::Meta::Requirements;
+
 has breaks => (
     is => 'ro', isa => 'HashRef[Str]',
     required => 1,

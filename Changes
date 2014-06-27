@@ -1,5 +1,8 @@
 Revision history for Dist-Zilla-Plugin-Test-CheckBreaks
 
+0.008     2014-06-27 16:35:50Z
+          - minor documentation fixes and metadata tweaks
+
 0.007     2014-02-23 00:39:22Z
           - avoid adding an empty x_breaks field to metadata
 

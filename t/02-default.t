@@ -2,14 +2,14 @@ use Test::More;
 use if $ENV{AUTHOR_TESTING}, 'Test::Warnings';
 use Test::DZil;
 use Path::Tiny;
-use File::pushd;
+use File::pushd 'pushd';
 
 {
     my $tzil = Builder->from_config(
         { dist_root => 't/does-not-exist' },
         {
             add_files => {
-                'source/dist.ini' => simple_ini(
+                path(qw(source dist.ini)) => simple_ini(
                     [ GatherDir => ],
                     [ 'Test::CheckBreaks' => ],
                 ),
@@ -38,12 +38,12 @@ CONFLICTS
 
     subtest 'run the generated test' => sub
     {
-        my $wd = File::pushd::pushd $build_dir;
+        my $wd = pushd $build_dir;
         do $file;
         warn $@ if $@;
     };
 
-    diag join("\n", 'log messages:', @{ $tzil->log_messages }) if not Test::Builder->new->is_passing;
+    diag 'saw log messages: ', explain $tzil->log_messages if not Test::Builder->new->is_passing;
 }
 
 {
@@ -51,7 +51,7 @@ CONFLICTS
         { dist_root => 't/does-not-exist' },
         {
             add_files => {
-                'source/dist.ini' => simple_ini(
+                path(qw(source dist.ini)) => simple_ini(
                     [ GatherDir => ],
                     [ 'Test::CheckBreaks' => ],
                 ),
@@ -75,12 +75,12 @@ CONFLICTS
 
     subtest 'run the generated test' => sub
     {
-        File::pushd::pushd $build_dir;
+        pushd $build_dir;
         do $file;
         warn $@ if $@;
     };
 
-    diag join("\n", 'log messages:', @{ $tzil->log_messages }) if not Test::Builder->new->is_passing;
+    diag 'saw log messages: ', explain $tzil->log_messages if not Test::Builder->new->is_passing;
 }
 
 done_testing;

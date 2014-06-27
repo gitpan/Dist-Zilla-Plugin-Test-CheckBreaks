@@ -1,10 +1,10 @@
 # NAME
 
-Dist::Zilla::Plugin::Test::CheckBreaks - Generate a test that shows your conflicting modules
+Dist::Zilla::Plugin::Test::CheckBreaks - Generate a test that shows what modules you are breaking
 
 # VERSION
 
-version 0.007
+version 0.008
 
 # SYNOPSIS
 
@@ -13,7 +13,7 @@ In your `dist.ini`:
     [Breaks]
     Foo = <= 1.1    ; Foo at 1.1 or lower will break when I am installed
 
-    [CheckBreaks]
+    [Test::CheckBreaks]
     conflicts_module = Moose::Conflicts
 
 # DESCRIPTION
@@ -73,8 +73,8 @@ were born!
 
 - [Dist::Zilla::Plugin::Breaks](https://metacpan.org/pod/Dist::Zilla::Plugin::Breaks)
 - [Dist::CheckConflicts](https://metacpan.org/pod/Dist::CheckConflicts)
-- [The Annotated Lancaster Consensus](http://www.dagolden.com/index.php/2098/the-annotated-lancaster-consensus/)
-at "Improving on 'conflicts'"
+- [The Annotated Lancaster Consensus](http://www.dagolden.com/index.php/2098/the-annotated-lancaster-consensus/) at "Improving on 'conflicts'"
+- [Module::Install::CheckConflicts](https://metacpan.org/pod/Module::Install::CheckConflicts)
 
 # AUTHOR
 
@@ -86,3 +86,7 @@ This software is copyright (c) 2014 by Karen Etheridge.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
+
+# CONTRIBUTOR
+
+Olivier Mengué <dolmen@cpan.org>

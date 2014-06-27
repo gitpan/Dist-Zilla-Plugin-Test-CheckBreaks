@@ -34,7 +34,8 @@ sub _merge_requires {
 }
 
 my %include = map {; $_ => 1 } qw(
-
+  Dist::CheckConflicts
+  CPAN::Meta::Validator
 );
 
 my %exclude = map {; $_ => 1 } qw(
@@ -46,36 +47,41 @@ my $static_prereqs = do { my $x = {
        'configure' => {
                         'requires' => {
                                         'ExtUtils::MakeMaker' => '6.30',
-                                        'Module::Build::Tiny' => '0.035'
+                                        'Module::Build::Tiny' => '0.036'
                                       }
                       },
        'develop' => {
                       'recommends' => {
-                                        'Dist::Zilla::PluginBundle::Author::ETHER' => '0.050'
+                                        'Dist::Zilla::PluginBundle::Author::ETHER' => '0.065'
                                       },
                       'requires' => {
-                                      'Dist::Zilla' => '5.013',
+                                      'Dist::Zilla' => '5',
                                       'Dist::Zilla::Plugin::Bootstrap::lib' => '0',
                                       'Dist::Zilla::Plugin::Breaks' => '0',
+                                      'Dist::Zilla::Plugin::ContributorsFromGit' => '0',
                                       'Dist::Zilla::Plugin::GitHub::Update' => '0',
                                       'Dist::Zilla::Plugin::GithubMeta' => '0',
-                                      'Dist::Zilla::Plugin::MakeMaker::Fallback' => '0',
-                                      'Dist::Zilla::Plugin::ModuleBuildTiny' => '0.004',
+                                      'Dist::Zilla::Plugin::MakeMaker::Fallback' => '0.008',
+                                      'Dist::Zilla::Plugin::MetaResources' => '0',
+                                      'Dist::Zilla::Plugin::ModuleBuildTiny::Fallback' => '0.005',
                                       'Dist::Zilla::Plugin::Prereqs' => '0',
                                       'Dist::Zilla::Plugin::Test::CheckBreaks' => '0',
+                                      'Dist::Zilla::Plugin::Test::CleanNamespaces' => '0',
                                       'Dist::Zilla::PluginBundle::Author::ETHER' => '0.049',
                                       'File::Spec' => '0',
                                       'IO::Handle' => '0',
                                       'IPC::Open3' => '0',
                                       'Pod::Coverage::TrustPod' => '0',
+                                      'Pod::Weaver::Section::Contributors' => '0',
                                       'Test::CPAN::Changes' => '0.19',
                                       'Test::CPAN::Meta' => '0',
-                                      'Test::CleanNamespaces' => '0',
+                                      'Test::CleanNamespaces' => '0.13',
                                       'Test::Kwalitee' => '1.12',
                                       'Test::More' => '0.94',
                                       'Test::NoTabs' => '0',
                                       'Test::Pod' => '1.41',
                                       'Test::Pod::Coverage' => '1.08',
+                                      'Test::Spelling' => '0.12',
                                       'Test::Warnings' => '0'
                                     }
                     },
@@ -83,11 +89,12 @@ my $static_prereqs = do { my $x = {
                       'requires' => {
                                       'Data::Section' => '0.004',
                                       'Dist::Zilla::File::InMemory' => '0',
+                                      'Dist::Zilla::Plugin::MetaResources' => '4.300039',
                                       'Dist::Zilla::Role::FileGatherer' => '0',
                                       'Dist::Zilla::Role::FileMunger' => '0',
                                       'Dist::Zilla::Role::PrereqSource' => '0',
                                       'Dist::Zilla::Role::TextTemplate' => '0',
-                                      'List::MoreUtils' => '0',
+                                      'List::Util' => '1.33',
                                       'Module::Metadata' => '0',
                                       'Module::Runtime' => '0',
                                       'Moose' => '0',
@@ -111,7 +118,6 @@ my $static_prereqs = do { my $x = {
                                    'ExtUtils::MakeMaker' => '0',
                                    'File::Spec::Functions' => '0',
                                    'File::pushd' => '0',
-                                   'List::Util' => '0',
                                    'Test::DZil' => '0',
                                    'Test::Deep' => '0',
                                    'Test::Deep::YAML' => '0.002',

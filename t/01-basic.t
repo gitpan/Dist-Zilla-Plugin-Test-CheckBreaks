@@ -5,7 +5,7 @@ use Test::More;
 use if $ENV{AUTHOR_TESTING}, 'Test::Warnings';
 use Test::DZil;
 use Path::Tiny;
-use File::pushd;
+use File::pushd 'pushd';
 use Test::Deep;
 use Test::Deep::YAML 0.002;
 
@@ -13,7 +13,7 @@ my $tzil = Builder->from_config(
     { dist_root => 't/does-not-exist' },
     {
         add_files => {
-            'source/dist.ini' => simple_ini(
+            path(qw(source dist.ini)) => simple_ini(
                 [ GatherDir => ],
                 [ MetaYAML => ],
                 [ 'Test::CheckBreaks' => { conflicts_module => 'Moose::Conflicts' } ],
@@ -39,6 +39,7 @@ unlike($content, qr/[^\S\n]\n/m, 'no trailing whitespace in generated test');
 like($content, qr/eval 'require $_; $_->check_conflicts'/m, "test checks $_")
     for 'Moose::Conflicts';
 
+# note - YAML.pm wants characters, not octets
 my $yaml = $tzil->slurp_file('build/META.yml');
 cmp_deeply(
     $yaml,
@@ -54,11 +55,11 @@ cmp_deeply(
 
 subtest 'run the generated test' => sub
 {
-    my $wd = File::pushd::pushd $build_dir;
+    my $wd = pushd $build_dir;
     do $file;
     warn $@ if $@;
 };
 
-diag join("\n", 'log messages:', @{ $tzil->log_messages }) if not Test::Builder->new->is_passing;
+diag 'saw log messages: ', explain $tzil->log_messages if not Test::Builder->new->is_passing;
 
 done_testing;

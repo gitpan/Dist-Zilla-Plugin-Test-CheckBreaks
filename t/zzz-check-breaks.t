@@ -24,10 +24,10 @@ $reqs->add_string_requirement($_, $breaks->{$_}) foreach keys %$breaks;
 use CPAN::Meta::Check 0.007 'check_requirements';
 our $result = check_requirements($reqs, 'conflicts');
 
-if (my @breaks = sort grep { defined $result->{$_} } keys %$result)
+if (my @breaks = grep { defined $result->{$_} } keys %$result)
 {
     diag 'Breakages found with Dist-Zilla-Plugin-Test-CheckBreaks:';
-    diag "$result->{$_}" for @breaks;
+    diag "$result->{$_}" for sort @breaks;
     diag "\n", 'You should now update these modules!';
 }
 
