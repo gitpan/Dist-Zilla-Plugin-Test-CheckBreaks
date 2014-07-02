@@ -4,8 +4,8 @@ package Dist::Zilla::Plugin::Test::CheckBreaks;
 BEGIN {
   $Dist::Zilla::Plugin::Test::CheckBreaks::AUTHORITY = 'cpan:ETHER';
 }
-# git description: v0.007-24-gce55c98
-$Dist::Zilla::Plugin::Test::CheckBreaks::VERSION = '0.008';
+# git description: v0.008-1-g5a7edbd
+$Dist::Zilla::Plugin::Test::CheckBreaks::VERSION = '0.009';
 # ABSTRACT: Generate a test that shows what modules you are breaking
 # KEYWORDS: prerequisites upstream dependencies modules conflicts breaks breakages metadata
 # vim: set ts=8 sw=4 tw=78 et :
@@ -17,7 +17,7 @@ with (
     'Dist::Zilla::Role::TextTemplate',
     'Dist::Zilla::Role::PrereqSource',
 );
-use Module::Metadata;
+use Module::Metadata 1.000005;
 use Path::Tiny;
 use Module::Runtime 'module_notional_filename';
 use List::Util 1.33 'any';
@@ -208,7 +208,7 @@ Dist::Zilla::Plugin::Test::CheckBreaks - Generate a test that shows what modules
 
 =head1 VERSION
 
-version 0.008
+version 0.009
 
 =head1 SYNOPSIS
 

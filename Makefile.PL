@@ -88,7 +88,7 @@ my %WriteMakefileArgs = (
     "Dist::Zilla::Role::PrereqSource" => 0,
     "Dist::Zilla::Role::TextTemplate" => 0,
     "List::Util" => "1.33",
-    "Module::Metadata" => 0,
+    "Module::Metadata" => "1.000005",
     "Module::Runtime" => 0,
     "Moose" => 0,
     "Path::Tiny" => 0,
@@ -112,7 +112,7 @@ my %WriteMakefileArgs = (
     "lib" => 0,
     "version" => 0
   },
-  "VERSION" => "0.008",
+  "VERSION" => "0.009",
   "test" => {
     "TESTS" => "t/*.t"
   }
@@ -134,7 +134,7 @@ my %FallbackPrereqs = (
   "File::Spec::Functions" => 0,
   "File::pushd" => 0,
   "List::Util" => "1.33",
-  "Module::Metadata" => 0,
+  "Module::Metadata" => "1.000005",
   "Module::Runtime" => 0,
   "Moose" => 0,
   "Path::Tiny" => 0,

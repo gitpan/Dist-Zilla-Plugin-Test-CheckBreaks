@@ -1,5 +1,9 @@
 Revision history for Dist-Zilla-Plugin-Test-CheckBreaks
 
+0.009     2014-07-02 03:25:05Z
+          - define a specific version needed for Module::Metadata, for the
+            interfaces we use
+
 0.008     2014-06-27 16:35:50Z
           - minor documentation fixes and metadata tweaks
 

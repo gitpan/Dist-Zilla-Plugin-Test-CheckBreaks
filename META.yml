@@ -42,7 +42,7 @@ no_index:
 provides:
   Dist::Zilla::Plugin::Test::CheckBreaks:
     file: lib/Dist/Zilla/Plugin/Test/CheckBreaks.pm
-    version: '0.008'
+    version: '0.009'
 requires:
   Data::Section: '0.004'
   Dist::Zilla::File::InMemory: '0'
@@ -52,7 +52,7 @@ requires:
   Dist::Zilla::Role::PrereqSource: '0'
   Dist::Zilla::Role::TextTemplate: '0'
   List::Util: '1.33'
-  Module::Metadata: '0'
+  Module::Metadata: '1.000005'
   Module::Runtime: '0'
   Moose: '0'
   Path::Tiny: '0'
@@ -67,7 +67,7 @@ resources:
   bugtracker: https://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-Plugin-Test-CheckBreaks
   homepage: https://github.com/karenetheridge/Dist-Zilla-Plugin-Test-CheckBreaks
   repository: https://github.com/karenetheridge/Dist-Zilla-Plugin-Test-CheckBreaks.git
-version: '0.008'
+version: '0.009'
 x_Dist_Zilla:
   perl:
     version: '5.021001'
@@ -557,7 +557,7 @@ x_Dist_Zilla:
         Dist::Zilla::Plugin::Git::Tag:
           branch: ~
           signed: 0
-          tag: v0.008
+          tag: v0.009
           tag_format: v%v%t
           tag_message: v%v%t
           time_zone: local
@@ -568,7 +568,7 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::GitHub::Update
       name: '@Author::ETHER/GitHub::Update'
-      version: '0.36'
+      version: '0.38'
     -
       class: Dist::Zilla::Plugin::Git::Push
       config:

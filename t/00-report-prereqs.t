@@ -95,7 +95,7 @@ my $static_prereqs = do { my $x = {
                                       'Dist::Zilla::Role::PrereqSource' => '0',
                                       'Dist::Zilla::Role::TextTemplate' => '0',
                                       'List::Util' => '1.33',
-                                      'Module::Metadata' => '0',
+                                      'Module::Metadata' => '1.000005',
                                       'Module::Runtime' => '0',
                                       'Moose' => '0',
                                       'Path::Tiny' => '0',

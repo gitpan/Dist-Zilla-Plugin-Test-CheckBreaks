@@ -4,7 +4,7 @@ Dist::Zilla::Plugin::Test::CheckBreaks - Generate a test that shows what modules
 
 # VERSION
 
-version 0.008
+version 0.009
 
 # SYNOPSIS
 

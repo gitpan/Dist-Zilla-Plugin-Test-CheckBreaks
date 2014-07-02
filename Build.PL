@@ -64,7 +64,7 @@ EOW
         "Karen Etheridge <ether\@cpan.org>"
       ],
       "dist_name" => "Dist-Zilla-Plugin-Test-CheckBreaks",
-      "dist_version" => "0.008",
+      "dist_version" => "0.009",
       "license" => "perl",
       "module_name" => "Dist::Zilla::Plugin::Test::CheckBreaks",
       "recommends" => {},
@@ -78,7 +78,7 @@ EOW
         "Dist::Zilla::Role::PrereqSource" => 0,
         "Dist::Zilla::Role::TextTemplate" => 0,
         "List::Util" => "1.33",
-        "Module::Metadata" => 0,
+        "Module::Metadata" => "1.000005",
         "Module::Runtime" => 0,
         "Moose" => 0,
         "Path::Tiny" => 0,
