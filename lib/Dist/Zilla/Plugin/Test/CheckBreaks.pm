@@ -1,13 +1,10 @@
 use strict;
 use warnings;
 package Dist::Zilla::Plugin::Test::CheckBreaks;
-BEGIN {
-  $Dist::Zilla::Plugin::Test::CheckBreaks::AUTHORITY = 'cpan:ETHER';
-}
-# git description: v0.008-1-g5a7edbd
-$Dist::Zilla::Plugin::Test::CheckBreaks::VERSION = '0.009';
+# git description: v0.009-13-g3980c9c
+$Dist::Zilla::Plugin::Test::CheckBreaks::VERSION = '0.010';
 # ABSTRACT: Generate a test that shows what modules you are breaking
-# KEYWORDS: prerequisites upstream dependencies modules conflicts breaks breakages metadata
+# KEYWORDS: distribution prerequisites upstream dependencies modules conflicts breaks breakages metadata
 # vim: set ts=8 sw=4 tw=78 et :
 
 use Moose;
@@ -20,12 +17,24 @@ with (
 use Module::Metadata 1.000005;
 use Path::Tiny;
 use Module::Runtime 'module_notional_filename';
-use List::Util 1.33 'any';
+use List::Util 1.33 qw(any first);
 use Sub::Exporter::ForMethods 'method_installer';
 use Data::Section 0.004 { installer => method_installer }, '-setup';
 use namespace::autoclean;
 
 sub filename { path('t', 'zzz-check-breaks.t') }
+
+around dump_config => sub
+{
+    my ($orig, $self) = @_;
+    my $config = $self->$orig;
+
+    $config->{+__PACKAGE__} = {
+        conflicts_module => $self->conflicts_module,
+    };
+
+    return $config;
+};
 
 sub gather_files
 {
@@ -71,16 +80,16 @@ has conflicts_module => (
     },
 );
 
-sub munge_file
+sub munge_files
 {
-    my ($self, $file) = @_;
-
-    return unless $file->name eq $self->filename;
+    my $self = shift;
 
     my $breaks_data = $self->zilla->distmeta->{x_breaks};
-
-    $self->log('no conflicts module found to check against: adding no-op test')
+    $self->log_debug('no x_breaks metadata and no conflicts module found to check against: adding no-op test')
         if not keys %$breaks_data and not $self->conflicts_module;
+
+    my $filename = $self->filename;
+    my $file = first { $_->name eq $filename } @{ $self->zilla->files };
 
     $file->content(
         $self->fill_in_string(
@@ -88,7 +97,7 @@ sub munge_file
             {
                 dist => \($self->zilla),
                 plugin => \$self,
-                module  => \($self->conflicts_module),
+                module => \($self->conflicts_module),
                 breaks => \$breaks_data,
             }
         )
@@ -102,15 +111,20 @@ sub register_prereqs
     my $self = shift;
 
     my $distmeta = $self->zilla->distmeta;
-    return unless exists $distmeta->{x_breaks} and keys %{ $distmeta->{x_breaks} };
 
     $self->zilla->register_prereqs(
         {
             phase => 'test',
             type  => 'requires',
         },
-        'CPAN::Meta::Requirements' => 0,
-        'CPAN::Meta::Check' => '0.007',
+        'Test::More' => '0.88',
+        exists $distmeta->{x_breaks} && keys %{ $distmeta->{x_breaks} }
+            ? (
+                'CPAN::Meta::Requirements' => '0',
+                'CPAN::Meta::Check' => '0.007',
+                'Data::Dumper' => '0',
+            ) : (),
+        $self->conflicts_module ? ( 'Module::Runtime' => '0' ) : (),
     );
 }
 
@@ -163,7 +177,7 @@ __PACKAGE__->meta->make_immutable;
 #pod L<[Conflicts]|Dist::Zilla::Plugin::Conflicts> to be used in your distribution;
 #pod this is only a feature added for backwards compatibility.
 #pod
-#pod =for Pod::Coverage filename gather_files munge_file register_prereqs
+#pod =for Pod::Coverage filename gather_files munge_files register_prereqs
 #pod
 #pod =head1 BACKGROUND
 #pod
@@ -187,14 +201,11 @@ __PACKAGE__->meta->make_immutable;
 #pod
 #pod =head1 SEE ALSO
 #pod
-#pod =begin :list
-#pod
+#pod =for :list
 #pod * L<Dist::Zilla::Plugin::Breaks>
 #pod * L<Dist::CheckConflicts>
 #pod * L<The Annotated Lancaster Consensus|http://www.dagolden.com/index.php/2098/the-annotated-lancaster-consensus/> at "Improving on 'conflicts'"
 #pod * L<Module::Install::CheckConflicts>
-#pod
-#pod =end :list
 #pod
 #pod =cut
 
@@ -208,7 +219,7 @@ Dist::Zilla::Plugin::Test::CheckBreaks - Generate a test that shows what modules
 
 =head1 VERSION
 
-version 0.009
+version 0.010
 
 =head1 SYNOPSIS
 
@@ -255,7 +266,7 @@ There is no error if the module does not exist. This test does not require
 L<[Conflicts]|Dist::Zilla::Plugin::Conflicts> to be used in your distribution;
 this is only a feature added for backwards compatibility.
 
-=for Pod::Coverage filename gather_files munge_file register_prereqs
+=for Pod::Coverage filename gather_files munge_files register_prereqs
 
 =head1 BACKGROUND
 
@@ -312,6 +323,8 @@ the same terms as the Perl 5 programming language system itself.
 
 =head1 CONTRIBUTOR
 
+=for stopwords Olivier Mengué
+
 Olivier Mengué <dolmen@cpan.org>
 
 =cut
@@ -323,7 +336,7 @@ use warnings;
 
 # this test was generated with {{ ref($plugin) . ' ' . ($plugin->VERSION || '<self>') }}
 
-use Test::More;
+use Test::More 0.88;
 
 SKIP: {
 {{

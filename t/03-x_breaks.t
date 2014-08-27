@@ -16,6 +16,7 @@ my $tzil = Builder->from_config(
         add_files => {
             path(qw(source dist.ini)) => simple_ini(
                 [ GatherDir => ],
+                [ MetaConfig => ],
                 [ 'Test::CheckBreaks' => ],
                 [ '=Breaks' => {
                     'ClassA' => '>= 1.0',   # fails; stored as 'version'
@@ -57,11 +58,49 @@ my @expected_break_specs = (
 
 like($content, qr/$_/m, 'test checks the right version range') foreach @expected_break_specs;
 
+cmp_deeply(
+    $tzil->distmeta,
+    superhashof({
+        prereqs => {
+            test => {
+                requires => {
+                    'Test::More' => '0.88',
+                    'CPAN::Meta::Requirements' => '0',
+                    'CPAN::Meta::Check' => '0.007',
+                    'Data::Dumper' => '0',
+                },
+            },
+        },
+        x_breaks => {
+            'ClassA' => '1.0',
+            'ClassB' => '<= 20.0',
+            'ClassC' => '== 1.0',
+            'ClassD' => '!= 1.0',
+        },
+        x_Dist_Zilla => superhashof({
+            plugins => supersetof(
+                {
+                    class => 'Dist::Zilla::Plugin::Test::CheckBreaks',
+                    config => {
+                        'Dist::Zilla::Plugin::Test::CheckBreaks' => {
+                            conflicts_module => undef,
+                        },
+                    },
+                    name => 'Test::CheckBreaks',
+                    version => ignore,
+                },
+            ),
+        }),
+    }),
+    'correct test prereqs are injected; correct dumped configs',
+);
+
 subtest 'run the generated test' => sub
 {
     my $wd = pushd $build_dir;
     do $file;
-    warn $@ if $@;
+    note 'ran tests successfully' if not $@;
+    fail($@) if $@;
 };
 
 # we define a global $result in the test, which we can now use to extract the values of the test
@@ -78,7 +117,6 @@ cmp_deeply(
     },
     'breakages checked, with the correct results achieved',
 );
-
 
 diag 'saw log messages: ', explain $tzil->log_messages if not Test::Builder->new->is_passing;
 

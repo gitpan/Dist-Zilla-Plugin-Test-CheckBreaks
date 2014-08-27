@@ -7,7 +7,6 @@ use Test::DZil;
 use Path::Tiny;
 use File::pushd 'pushd';
 use Test::Deep;
-use Test::Deep::YAML 0.002;
 
 my $tzil = Builder->from_config(
     { dist_root => 't/does-not-exist' },
@@ -15,7 +14,7 @@ my $tzil = Builder->from_config(
         add_files => {
             path(qw(source dist.ini)) => simple_ini(
                 [ GatherDir => ],
-                [ MetaYAML => ],
+                [ MetaConfig => ],
                 [ 'Test::CheckBreaks' => { conflicts_module => 'Moose::Conflicts' } ],
             ),
             path(qw(source lib Foo.pm)) => "package Foo;\n1;\n",
@@ -39,25 +38,50 @@ unlike($content, qr/[^\S\n]\n/m, 'no trailing whitespace in generated test');
 like($content, qr/eval 'require $_; $_->check_conflicts'/m, "test checks $_")
     for 'Moose::Conflicts';
 
-# note - YAML.pm wants characters, not octets
-my $yaml = $tzil->slurp_file('build/META.yml');
 cmp_deeply(
-    $yaml,
-    yaml(
-        code(sub {
-            my $val = shift;
-            return 1 if not exists $val->{x_breaks};
-            return (0, 'x_breaks field exists')
-        })
-    ),
+    $tzil->distmeta,
+    # TODO: replace with Test::Deep::notexists($key)
+    code(sub {
+        !exists $_[0]->{x_breaks} ? 1 : (0, 'x_breaks exists');
+    }),
     'metadata does not get an autovivified x_breaks field',
 );
+
+cmp_deeply(
+    $tzil->distmeta,
+    superhashof({
+        prereqs => {
+            test => {
+                requires => {
+                    'Test::More' => '0.88',
+                    'Module::Runtime' => '0',
+                },
+            },
+        },
+        x_Dist_Zilla => superhashof({
+            plugins => supersetof(
+                {
+                    class => 'Dist::Zilla::Plugin::Test::CheckBreaks',
+                    config => {
+                        'Dist::Zilla::Plugin::Test::CheckBreaks' => {
+                            conflicts_module => 'Moose::Conflicts',
+                        },
+                    },
+                    name => 'Test::CheckBreaks',
+                    version => ignore,
+                },
+            ),
+        }),
+    }),
+    'prereqs are properly injected for the test phase; correct dumped configs',
+) or diag 'got distmeta: ', explain $tzil->distmeta;
 
 subtest 'run the generated test' => sub
 {
     my $wd = pushd $build_dir;
     do $file;
-    warn $@ if $@;
+    note 'ran tests successfully' if not $@;
+    fail($@) if $@;
 };
 
 diag 'saw log messages: ', explain $tzil->log_messages if not Test::Builder->new->is_passing;

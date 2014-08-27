@@ -3,7 +3,7 @@ use warnings;
 
 # this test was generated with Dist::Zilla::Plugin::Test::CheckBreaks <self>
 
-use Test::More;
+use Test::More 0.88;
 
 SKIP: {
     eval 'require Moose::Conflicts; Moose::Conflicts->check_conflicts';
