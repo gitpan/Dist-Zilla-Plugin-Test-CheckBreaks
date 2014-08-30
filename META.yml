@@ -5,12 +5,10 @@ author:
 build_requires:
   CPAN::Meta::Check: '0.007'
   CPAN::Meta::Requirements: '0'
-  Data::Dumper: '0'
   Dist::Zilla::Role::MetaProvider: '0'
   ExtUtils::MakeMaker: '0'
   File::Spec: '0'
   File::pushd: '0'
-  Module::Runtime: '0'
   Test::DZil: '0'
   Test::Deep: '0'
   Test::More: '0.88'
@@ -43,8 +41,9 @@ no_index:
 provides:
   Dist::Zilla::Plugin::Test::CheckBreaks:
     file: lib/Dist/Zilla/Plugin/Test/CheckBreaks.pm
-    version: '0.010'
+    version: '0.011'
 requires:
+  Data::Dumper: '0'
   Data::Section: '0.004'
   Dist::Zilla::File::InMemory: '0'
   Dist::Zilla::Plugin::MetaResources: '4.300039'
@@ -68,7 +67,7 @@ resources:
   bugtracker: https://rt.cpan.org/Public/Dist/Display.html?Name=Dist-Zilla-Plugin-Test-CheckBreaks
   homepage: https://github.com/karenetheridge/Dist-Zilla-Plugin-Test-CheckBreaks
   repository: https://github.com/karenetheridge/Dist-Zilla-Plugin-Test-CheckBreaks.git
-version: '0.010'
+version: '0.011'
 x_Dist_Zilla:
   perl:
     version: '5.021003'
@@ -409,7 +408,7 @@ x_Dist_Zilla:
           inherit_version: '1'
           meta_noindex: '1'
       name: '@Author::ETHER/MetaProvides::Package'
-      version: '2.001000'
+      version: '2.001001'
     -
       class: Dist::Zilla::Plugin::MetaConfig
       name: '@Author::ETHER/MetaConfig'
@@ -604,7 +603,7 @@ x_Dist_Zilla:
         Dist::Zilla::Plugin::Git::Tag:
           branch: ~
           signed: 0
-          tag: v0.010
+          tag: v0.011
           tag_format: v%v%t
           tag_message: v%v%t
           time_zone: local
@@ -658,10 +657,10 @@ x_Dist_Zilla:
       class: Dist::Zilla::Plugin::Test::CleanNamespaces
       config:
         Dist::Zilla::Plugin::Test::CleanNamespaces:
-          filename: xt/release/clean-namespaces.t
+          filename: xt/author/clean-namespaces.t
           skips: []
       name: Test::CleanNamespaces
-      version: '0.005'
+      version: '0.006'
     -
       class: Dist::Zilla::Plugin::MetaResources
       name: additional

@@ -67,7 +67,6 @@ cmp_deeply(
                     'Test::More' => '0.88',
                     'CPAN::Meta::Requirements' => '0',
                     'CPAN::Meta::Check' => '0.007',
-                    'Data::Dumper' => '0',
                 },
             },
         },

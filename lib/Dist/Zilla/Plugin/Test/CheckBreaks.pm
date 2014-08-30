@@ -1,8 +1,8 @@
 use strict;
 use warnings;
 package Dist::Zilla::Plugin::Test::CheckBreaks;
-# git description: v0.009-13-g3980c9c
-$Dist::Zilla::Plugin::Test::CheckBreaks::VERSION = '0.010';
+# git description: v0.010-2-g9825135
+$Dist::Zilla::Plugin::Test::CheckBreaks::VERSION = '0.011';
 # ABSTRACT: Generate a test that shows what modules you are breaking
 # KEYWORDS: distribution prerequisites upstream dependencies modules conflicts breaks breakages metadata
 # vim: set ts=8 sw=4 tw=78 et :
@@ -20,6 +20,7 @@ use Module::Runtime 'module_notional_filename';
 use List::Util 1.33 qw(any first);
 use Sub::Exporter::ForMethods 'method_installer';
 use Data::Section 0.004 { installer => method_installer }, '-setup';
+use Data::Dumper ();
 use namespace::autoclean;
 
 sub filename { path('t', 'zzz-check-breaks.t') }
@@ -122,9 +123,7 @@ sub register_prereqs
             ? (
                 'CPAN::Meta::Requirements' => '0',
                 'CPAN::Meta::Check' => '0.007',
-                'Data::Dumper' => '0',
             ) : (),
-        $self->conflicts_module ? ( 'Module::Runtime' => '0' ) : (),
     );
 }
 
@@ -219,7 +218,7 @@ Dist::Zilla::Plugin::Test::CheckBreaks - Generate a test that shows what modules
 
 =head1 VERSION
 
-version 0.010
+version 0.011
 
 =head1 SYNOPSIS
 
@@ -360,7 +359,6 @@ CHECK_CONFLICTS
 {{
     if (keys %$breaks)
     {
-        use Data::Dumper;
         my $dumper = Data::Dumper->new([ $breaks ], [ 'breaks' ]);
         $dumper->Sortkeys(1);
         $dumper->Indent(1);
@@ -385,7 +383,6 @@ CHECK_BREAKS_1
 }
 CHECK_BREAKS_2
     }
-    else { q{pass 'no x_breaks data to check';} }
+    else { q{pass 'no x_breaks data to check';} . "\n" }
 }}
-
 done_testing;

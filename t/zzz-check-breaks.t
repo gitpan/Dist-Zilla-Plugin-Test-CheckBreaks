@@ -31,5 +31,4 @@ if (my @breaks = grep { defined $result->{$_} } keys %$result)
     diag "\n", 'You should now update these modules!';
 }
 
-
 done_testing;

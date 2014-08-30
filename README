@@ -1,7 +1,7 @@
 
 
 This archive contains the distribution Dist-Zilla-Plugin-Test-CheckBreaks,
-version 0.010:
+version 0.011:
 
   Generate a test that shows what modules you are breaking
 

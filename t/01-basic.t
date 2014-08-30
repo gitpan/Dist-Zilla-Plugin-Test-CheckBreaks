@@ -54,7 +54,6 @@ cmp_deeply(
             test => {
                 requires => {
                     'Test::More' => '0.88',
-                    'Module::Runtime' => '0',
                 },
             },
         },

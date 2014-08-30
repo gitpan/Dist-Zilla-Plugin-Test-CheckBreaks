@@ -1,5 +1,8 @@
 Revision history for Dist-Zilla-Plugin-Test-CheckBreaks
 
+0.011     2014-08-30 03:04:56Z
+          - removed bunk test prereqs from version 0.010
+
 0.010     2014-08-27 03:06:27Z
           - inject more accurate test prerequisites into the distribution
           - improved tests and metadata

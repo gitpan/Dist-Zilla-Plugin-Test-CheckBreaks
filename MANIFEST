@@ -20,10 +20,10 @@ t/lib/Breaks.pm
 t/zzz-check-breaks.t
 weaver.ini
 xt/author/00-compile.t
+xt/author/clean-namespaces.t
 xt/author/no-tabs.t
 xt/author/pod-spell.t
 xt/release/changes_has_content.t
-xt/release/clean-namespaces.t
 xt/release/cpan-changes.t
 xt/release/distmeta.t
 xt/release/eol.t
